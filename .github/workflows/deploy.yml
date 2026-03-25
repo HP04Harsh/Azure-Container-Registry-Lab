@@ -1,0 +1,30 @@
+name: Build, Push, Deploy Simple Node App
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and Push Docker Image
+        run: |
+          az acr login --name gondiacr
+          docker build -t gondiacr.azurecr.io/myapp:v1 ./container-apps
+          docker push gondiacr.azurecr.io/myapp:v1
+
+      - name: Deploy to Azure Container App
+        run: |
+          az containerapp update \
+            --name transcend-app \
+            --resource-group my-rg \
+            --image gondiacr.azurecr.io/myapp:v1
