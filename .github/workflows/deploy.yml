@@ -19,7 +19,7 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           az acr login --name gondiacr
-          docker build -t gondiacr.azurecr.io/myapp:v1 ./container-apps
+          docker build -t gondiacr.azurecr.io/myapp:v1 .
           docker push gondiacr.azurecr.io/myapp:v1
 
       - name: Deploy to Azure Container App
