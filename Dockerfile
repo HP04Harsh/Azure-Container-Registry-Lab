@@ -5,10 +5,10 @@ FROM node:18
 WORKDIR /app
 
 # Copy your single app.js
-COPY App.js .
+COPY app.js .
 
 # Expose a port (let's use 3000)
 EXPOSE 3000
 
 # Run the app
-CMD ["node", "App.js"]
+CMD ["node", "app.js"]
